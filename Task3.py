@@ -8,9 +8,60 @@ with open('texts.csv', 'r') as f:
     reader = csv.reader(f)
     texts = list(reader)
 
+"""
+Calls initiated from Bangalore can be determined by the area code only.
+As mobile number does not provide info for the location 
+"""
+
+
+def is_number_from_bangalore(number):
+    return number.startswith('(080)')
+
+
+def is_number_mobile_user(number):
+    return number.startswith('7') or number.startswith('8') or number.startswith('9')
+
+
+def is_number_a_telemarketer(number):
+    return number.startswith('140')
+
+
+calls_initiated_from_bangalore_to_fixed_line = {}
+calls_initiated_from_bangalore_to_mobile = {}
+calls_initiated_from_bangalore_to_telemarketer = {}
+calls_initiated_from_bangalore_to_others = {}
+calls_targeted_to_bangalore = []
+calls_started_to_bangalore = []
 with open('calls.csv', 'r') as f:
     reader = csv.reader(f)
     calls = list(reader)
+    for row in calls:
+        caller = row[0]
+        callee = row[1]
+        if is_number_from_bangalore(caller):
+            calls_started_to_bangalore.append(caller)
+            if callee.startswith('('):
+                calls_initiated_from_bangalore_to_fixed_line[callee[1:4]] = 1
+                if is_number_from_bangalore(callee):
+                    calls_targeted_to_bangalore.append(callee)
+            elif is_number_mobile_user(callee):
+                calls_initiated_from_bangalore_to_mobile[callee[0:4]] = 1
+            elif is_number_a_telemarketer(callee):
+                calls_initiated_from_bangalore_to_telemarketer[callee[0:4]] = 1
+            else:
+                calls_initiated_from_bangalore_to_others[callee] = 1
+
+calls_to_fixed_lines_mobile_telemarketers = list(calls_initiated_from_bangalore_to_fixed_line) \
+                                            + list(calls_initiated_from_bangalore_to_mobile) \
+                                            + list(calls_initiated_from_bangalore_to_telemarketer)
+total_calls_from_bangalore = calls_to_fixed_lines_mobile_telemarketers + list(calls_initiated_from_bangalore_to_others)
+
+print("The numbers called by people in Bangalore have codes: {}".format(
+    calls_to_fixed_lines_mobile_telemarketers
+))
+
+print("{} percent of calls from fixed lines in Bangalore are calls to other fixed lines in Bangalore.".format(
+    (len(calls_targeted_to_bangalore)/len(calls_started_to_bangalore)) * 100))
 
 """
 TASK 3:
