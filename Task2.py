@@ -29,3 +29,8 @@ Print a message:
 September 2016.".
 """
 
+"""
+Ignoring the text.csv as the solution for this problem does not require reading data from "texts.csv."
+
+ 
+"""

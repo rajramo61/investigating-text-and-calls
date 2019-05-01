@@ -25,3 +25,20 @@ Print messages:
 "First record of texts, <incoming number> texts <answering number> at time <time>"
 "Last record of calls, <incoming number> calls <answering number> at time <time>, lasting <during> seconds"
 """
+
+"""
+Opening the "texts.csv" file in read mode     -- 1 instruction
+reading the csv file                          -- 1 instruction
+Adding each line from "texts.csv" to the list -- n instructions (Assuming there are n lines to the file)
+Fetching the first element from the list      -- 1 instruction
+print statement                               -- 1 instruction + (fetch 3 records from list)
+Worst Case Analysis O(1+1+n+1+1+3) = O(n+7) ~= O(n)
+
+
+Opening the "calls.csv" file in read mode     -- 1 instruction
+reading the csv file                          -- 1 instruction
+Adding each line from "calls.csv" to the list -- m instructions (Assuming there are m lines to the file)
+Fetching the first element from the list      -- 1 instruction
+print statement                               -- 1 instruction + (fetch 3 records from list)
+Worst Case Analysis O(1+1+m+1+1+3) = O(m+7) ~= O(m)
+"""

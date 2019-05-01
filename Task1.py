@@ -30,3 +30,19 @@ How many different telephone numbers are there in the records?
 Print a message:
 "There are <count> different telephone numbers in the records."
 """
+
+"""
+Opening the "texts.csv" file in read mode     -- 1 instruction
+reading the csv file                          -- 1 instruction
+Adding each line from "texts.csv" to the list -- n instructions (Assuming there are n lines to the file)
+for loop has 2 statements with 2 instructions -- 4n instructions
+(add to the dictionary and get the value from list using index) each 
+Total instructions = 1+1+n+4n = 5n + 2
+
+Steps are same for "calls.txt", assuming it has m lines
+Total instructions = 1+1+m+4m = 5m + 2
+Print will take 3 more instructions (1 Print method, 1 format method and 1 len for dictionary)
+
+Worst case performance = O(5n + 2 + 5m + 2 + 3) = O(5n + 5m + 7) 
+~= O(m+n) if m and n are large numbers.
+"""
