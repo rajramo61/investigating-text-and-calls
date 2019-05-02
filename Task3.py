@@ -25,10 +25,10 @@ def is_number_a_telemarketer(number):
     return number.startswith('140')
 
 
-calls_initiated_from_bangalore_to_fixed_line = {}
-calls_initiated_from_bangalore_to_mobile = {}
-calls_initiated_from_bangalore_to_telemarketer = {}
-calls_initiated_from_bangalore_to_others = {}
+calls_initiated_from_bangalore_to_fixed_line = set()
+calls_initiated_from_bangalore_to_mobile = set()
+calls_initiated_from_bangalore_to_telemarketer = set()
+calls_initiated_from_bangalore_to_others = set()
 
 """
 Part B of the solution is based on all the calls initiated and destined to Bangalore.
@@ -48,15 +48,15 @@ with open('calls.csv', 'r') as f:
         if is_number_from_bangalore(caller):
             calls_started_from_bangalore.append(caller)
             if callee.startswith('('):
-                calls_initiated_from_bangalore_to_fixed_line[callee[1:4]] = 1
+                calls_initiated_from_bangalore_to_fixed_line.add(callee[1:4])
                 if is_number_from_bangalore(callee):
                     calls_targeted_to_bangalore.append(callee)
             elif is_number_mobile_user(callee):
-                calls_initiated_from_bangalore_to_mobile[callee[0:4]] = 1
+                calls_initiated_from_bangalore_to_mobile.add(callee[0:4])
             elif is_number_a_telemarketer(callee):
-                calls_initiated_from_bangalore_to_telemarketer[callee[0:4]] = 1
+                calls_initiated_from_bangalore_to_telemarketer.add(callee[0:4])
             else:
-                calls_initiated_from_bangalore_to_others[callee] = 1
+                calls_initiated_from_bangalore_to_others.add(callee)
 
 calls_to_fixed_lines_mobile_telemarketers = list(calls_initiated_from_bangalore_to_fixed_line) \
                                             + list(calls_initiated_from_bangalore_to_mobile) \
@@ -74,7 +74,7 @@ print("The numbers called by people in Bangalore have codes: {}".format(
 Part B solution print
 """
 print("{} percent of calls from fixed lines in Bangalore are calls to other fixed lines in Bangalore.".format(
-    (len(calls_targeted_to_bangalore) / len(calls_started_from_bangalore)) * 100))
+    round((len(calls_targeted_to_bangalore) / len(calls_started_from_bangalore)) * 100, 2)))
 
 """
 TASK 3:

@@ -14,14 +14,14 @@ with open('texts.csv', 'r') as f:
     texts = list(reader)
     for row in texts:
         distinct_phone_numbers[row[0]] = 1
-        distinct_phone_numbers[row[2]] = 1
+        distinct_phone_numbers[row[1]] = 1
 
 with open('calls.csv', 'r') as f:
     reader = csv.reader(f)
     calls = list(reader)
     for row in calls:
         distinct_phone_numbers[row[0]] = 1
-        distinct_phone_numbers[row[2]] = 1
+        distinct_phone_numbers[row[1]] = 1
 
 print("There are {} different telephone numbers in the records.".format(len(distinct_phone_numbers)))
 """

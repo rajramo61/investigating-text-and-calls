@@ -34,7 +34,7 @@ else:
         if telemarketers_who_send_text.get(key) is not None:
             del telemarketers_who_make_call[key]
 
-print("These numbers could be telemarketers: {}".format(len(list(telemarketers_who_make_call))))
+print("These numbers could be telemarketers: {}".format(list(telemarketers_who_make_call)))
 
 """
 TASK 4:

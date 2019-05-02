@@ -15,7 +15,7 @@ with open('calls.csv', 'r') as f:
     calls = list(reader)
     for row in calls:
         call_duration = int(row[3])
-        ph_number = int(row[0])
+        ph_number = row[0]
         if LONGEST_TIME < call_duration:
             LONGEST_TIME = call_duration
             PHONE_NUMBER = ph_number
