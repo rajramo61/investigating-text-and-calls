@@ -8,13 +8,12 @@ with open('texts.csv', 'r') as f:
     reader = csv.reader(f)
     texts = list(reader)
 
-"""
-Calls initiated from Bangalore can be determined by the area code only.
-As mobile number does not provide info for the location 
-"""
-
 
 def is_number_from_bangalore(number):
+    """
+    Calls initiated from Bangalore can be determined by the area code only.
+    As mobile number does not provide info for the location
+    """
     return number.startswith('(080)')
 
 
@@ -30,8 +29,16 @@ calls_initiated_from_bangalore_to_fixed_line = {}
 calls_initiated_from_bangalore_to_mobile = {}
 calls_initiated_from_bangalore_to_telemarketer = {}
 calls_initiated_from_bangalore_to_others = {}
+
+"""
+Part B of the solution is based on all the calls initiated and destined to Bangalore.
+
+One number can make many calls to different or to one number.
+So using list is better choice as it will keep the duplicate numbers as well.
+"""
 calls_targeted_to_bangalore = []
-calls_started_to_bangalore = []
+calls_started_from_bangalore = []
+
 with open('calls.csv', 'r') as f:
     reader = csv.reader(f)
     calls = list(reader)
@@ -39,7 +46,7 @@ with open('calls.csv', 'r') as f:
         caller = row[0]
         callee = row[1]
         if is_number_from_bangalore(caller):
-            calls_started_to_bangalore.append(caller)
+            calls_started_from_bangalore.append(caller)
             if callee.startswith('('):
                 calls_initiated_from_bangalore_to_fixed_line[callee[1:4]] = 1
                 if is_number_from_bangalore(callee):
@@ -56,12 +63,18 @@ calls_to_fixed_lines_mobile_telemarketers = list(calls_initiated_from_bangalore_
                                             + list(calls_initiated_from_bangalore_to_telemarketer)
 total_calls_from_bangalore = calls_to_fixed_lines_mobile_telemarketers + list(calls_initiated_from_bangalore_to_others)
 
+"""
+Part A solution print
+"""
 print("The numbers called by people in Bangalore have codes: {}".format(
     calls_to_fixed_lines_mobile_telemarketers
 ))
 
+"""
+Part B solution print
+"""
 print("{} percent of calls from fixed lines in Bangalore are calls to other fixed lines in Bangalore.".format(
-    (len(calls_targeted_to_bangalore)/len(calls_started_to_bangalore)) * 100))
+    (len(calls_targeted_to_bangalore) / len(calls_started_from_bangalore)) * 100))
 
 """
 TASK 3:
@@ -93,4 +106,46 @@ Print the answer as a part of a message::
 "<percentage> percent of calls from fixed lines in Bangalore are calls
 to other fixed lines in Bangalore."
 The percentage should have 2 decimal digits
+"""
+
+"""
+Ignoring the text.csv as the solution for this problem does not require reading data from "texts.csv."
+
+Opening the "calls.csv" file in read mode                  -- 1 instruction
+reading the csv file                                       -- 1 instruction
+Adding each line from "calls.csv" to the list              -- n instructions (Assuming there are n lines to the file)
+Iterating over each item in list                           -- n instructions
+Get the caller and callee details from row                 -- 2 instructions (one for each item)
+
+The first if condition will execute for each items in list -- 2n instructions (1 if condition and one statement in 
+                                                                                function call)
+Rest all are dependent on the first if condition. 
+But to get the worst case condition, assuming the most of
+the instructions will be executed. Then will take the 2 
+additional if condition path in the code.
+So, I can see total number of instructions                  -- 8 instructions ( 
+                                                                1 - append to list calls_started_from_bangalore
+                                                                2 - if condition
+                                                                2 - append to calls_initiated_from_bangalore_to_fixed_line
+                                                                2 - if condition and function call
+                                                                1 - append call to calls_targeted_to_bangalore
+                                                                )
+                                                                
+For last 2 statements before print                          -- 2n (4 list conversion which should include adding n values
+                                                                    to 4 different list object
+                                                                    +
+                                                                  3 list concatenation action on n elements
+                                                                  which will eventually be copying n elements
+                                                                  to the new lists. So n instructions to execute.
+                                                                  )
+First print statement                                      -- 2 instruction (1 print and 1 format method)
+Second print statement                                     -- 6 instructions (1 print
+                                                                              1 format
+                                                                              2 len
+                                                                              1 division
+                                                                              1 multiplication
+                                                                              ) 
+
+Worse case performance = O(1+1+n+n+2+2n+8+2n+2+6) = O(6n+20) ~= O(n) if n is very large
+
 """
