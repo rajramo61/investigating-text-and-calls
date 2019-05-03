@@ -21,7 +21,7 @@ with open('calls.csv', 'r') as f:
             PHONE_NUMBER = ph_number
 
 print("{} spent the longest time, {} seconds, on the phone during \
-        September 2016.".format(PHONE_NUMBER, LONGEST_TIME))
+September 2016.".format(PHONE_NUMBER, LONGEST_TIME))
 
 """
 TASK 2: Which telephone number spent the longest time on the phone

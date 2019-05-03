@@ -91,7 +91,10 @@ For last 2 statements before print                          -- 2n (4 list conver
                                                                   which will eventually be copying n elements
                                                                   to the new lists. So n instructions to execute.
                                                                   )
-First print statement                                      -- 2 instruction (1 print and 1 format method)
+                                                                sorting from Python uses
+                                                                Timsort-->https://en.wikipedia.org/wiki/Timsort
+                                                                So,
+First print statement                                      -- nlogn + 2 instruction (sorting n elements, 1 print and 1 format method)
 Second print statement                                     -- 6 instructions (1 print
                                                                               1 format
                                                                               2 len
@@ -99,7 +102,7 @@ Second print statement                                     -- 6 instructions (1 
                                                                               1 multiplication
                                                                               )
 
-Worse case performance = O(1+1+n+n+2+2n+8+2n+2+6) = O(6n+20) ~= O(n) if n is very large
+Worse case performance = O(1+1+n+n+2+2n+8+2n++nlogn+2+6) = O(6n+nlogn+20) ~= O(n+nlogn) if n is very large
 ======================================================================
 
 
@@ -113,37 +116,35 @@ reading the csv file                                       -- 1 instruction
 Adding each line from "texts.csv" to the list              -- m instructions (Assuming there are m lines to the file)
 Loop goes for m time, with worst case all the if conditions
 will be true and will be executed                          -- m instructions (for creating rwo variables)
-                                                           -- 3m instructions
-                                                                repeat m times 3 actions below
-                                                                (if condition,
-                                                                get 0th element from list
-                                                                function call and statement in function)
-Add entry to dictionary telemarketers_who_send_text        -- 2 instructions
+                                                           -- 6m instructions
+                                                                The following instructions execute of each item in loop
+                                                                (. 2 if conditions
+                                                                 . 2 function calls
+                                                                 . each if condition has 1 instruction to add element to set.
+                                                                    So total 2 instructions.
+                                                                )
+
 
 Opening the "calls.csv" file in read mode                  -- 1 instruction
 reading the csv file                                       -- 1 instruction
 Adding each line from "calls.csv" to the list              -- n instructions (Assuming there are n lines to the file)
 Loop goes for n time, with worst case all the if conditions
 will be true and will be executed                          -- n instructions (for creating rwo variables)
-                                                           -- 3n instructions
-                                                                repeat n times 3 actions below
-                                                                (if condition,
-                                                                get 0th element from list
-                                                                function call and statement in function)
-Add entry to dictionary telemarketers_who_make_call        -- 2 instructions
+                                                           -- 6n instructions
+                                                                The following instructions execute of each item in loop
+                                                                (. 2 if conditions
+                                                                 . 2 function calls
+                                                                 . each if condition has 1 instruction to add element to set.
+                                                                    So total 2 instructions.
+                                                                )
 
+Loop runs n times and within loop there are 2 instructions
+ which will run n times assuming all if conditions are true
+ so total instructions with loop                           -- 2n instructions
 
-The last if/else condition will execute on basis if m (number of text messages sent) is less
-or n (number of calls) is less. Assuming m is less.
+Print will take total                                      -- 2 instructions + nlogn instructions (sorting n elements
+                                                                                assuming all the number are telemarketers)
 
-Check if condition                                         -- 3 instructions
-Loop runs m times as m is less                             -- m instructions
-Within loop there are 4 instructions which will run m times
-assuming all if conditions are true so total instructions
-with loop                                                  -- 4m instructions
-
-Print will take total                                      -- 4 instructions
-
-Worst case performance = O(1+1+m+m+3m+2+1+1+n+n+3n+2+3+m+4m+4) = O(16+10m+5n) ~=O(m+n) for large values
+Worst case performance = O(1+1+m+m+6m+1+1+n+n+6n+2n+2+nlogn) = O(6+8m+8n+nlogn) ~=O(m+n+nlogn) for large values
                                                                                         of m and n
 ======================================================================
