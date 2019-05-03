@@ -18,7 +18,7 @@ def is_number_from_bangalore(number):
 
 
 def is_number_mobile_user(number):
-    return number.startswith('7') or number.startswith('8') or number.startswith('9')
+    return ' ' in number and (number.startswith('7') or number.startswith('8') or number.startswith('9'))
 
 
 def is_number_a_telemarketer(number):
@@ -48,13 +48,14 @@ with open('calls.csv', 'r') as f:
         if is_number_from_bangalore(caller):
             calls_started_from_bangalore.append(caller)
             if callee.startswith('('):
-                calls_initiated_from_bangalore_to_fixed_line.add(callee[1:4])
+                index = callee.find(')')
+                calls_initiated_from_bangalore_to_fixed_line.add(callee[1:index])
                 if is_number_from_bangalore(callee):
                     calls_targeted_to_bangalore.append(callee)
             elif is_number_mobile_user(callee):
                 calls_initiated_from_bangalore_to_mobile.add(callee[0:4])
             elif is_number_a_telemarketer(callee):
-                calls_initiated_from_bangalore_to_telemarketer.add(callee[0:4])
+                calls_initiated_from_bangalore_to_telemarketer.add(callee[0:3])
             else:
                 calls_initiated_from_bangalore_to_others.add(callee)
 
@@ -66,9 +67,9 @@ total_calls_from_bangalore = calls_to_fixed_lines_mobile_telemarketers + list(ca
 """
 Part A solution print
 """
-print("The numbers called by people in Bangalore have codes: {}".format(
-    sorted(calls_to_fixed_lines_mobile_telemarketers)
-))
+print("The numbers called by people in Bangalore have codes:")
+for codes in sorted(calls_to_fixed_lines_mobile_telemarketers):
+    print(codes)
 
 """
 Part B solution print
@@ -138,10 +139,10 @@ For last 2 statements before print                          -- 2n (4 list conver
                                                                   which will eventually be copying n elements
                                                                   to the new lists. So n instructions to execute.
                                                                   )
-                                                                sorting from Python uses
+                                                                sort from Python uses
                                                                 Timsort-->https://en.wikipedia.org/wiki/Timsort
                                                                 So,
-First print statement                                      -- nlogn + 2 instruction (sorting n elements, 1 print and 1 format method)
+First print statement                                      -- nlogn + 1 instruction (sorting n elements, 1 print)
 Second print statement                                     -- 6 instructions (1 print
                                                                               1 format
                                                                               2 len
@@ -149,6 +150,6 @@ Second print statement                                     -- 6 instructions (1 
                                                                               1 multiplication
                                                                               ) 
 
-Worse case performance = O(1+1+n+n+2+2n+8+2n++nlogn+2+6) = O(6n+nlogn+20) ~= O(n+nlogn) if n is very large
+Worse case performance = O(1+1+n+n+2+2n+8+2n++nlogn+1+6) = O(6n+nlogn+19) ~= O(n+nlogn) if n is very large
 
 """
