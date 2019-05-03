@@ -48,14 +48,26 @@ Ignoring the text.csv as the solution for this problem does not require reading 
 Opening the "calls.csv" file in read mode     -- 1 instruction
 reading the csv file                          -- 1 instruction
 Adding each line from "calls.csv" to the list -- n instructions (Assuming there are n lines to the file)
-Iterating over each item in list              -- n instructions
-get call duration from the line               -- 2 instructions (1 instruction to get data from array using array index and one to convert string to integer)
-get phone number from the line                -- 2 instructions (1 instruction to get data from array using array index and one to convert string to integer)
-if condition                                  -- 1 instructions
-2 assignments within if condition:            -- 2 instructions
+
+Iterating over each item in list              -- n time the following instructions will be executed
+    call_duration                                 -- 3 instructions (1 instruction to get data from array using array
+                                                                    index and one to convert string to integer
+                                                                    assigning value to variable
+                                                                    )
+    caller                                        -- 2 instructions
+    callee                                        -- 2 instructions
+    if/else: Both if condition will execute each
+    time and either if or else will execute       -- 4 instructions (2 if conditions and 2 instructions within if or else
+                                                                    based on condition is True or False)
+So first loop will execute   ---- 11n instructions
+
+Next loop will execute n times assuming maximum entries
+It has 1 if condition and 2 assignments           -- 3 instruction
+So second loop will execute  ---- 3n instructions
+
 Print will take 2 more instructions (1 Print method, 1 format method)
 
-Worst case performance == O(1+1+n+n+2+2+1+2) = O(2n+9) ~= O(n) if n is very large
+Worst case performance == O(1+1+n+11n+3n+2) = O(14n+4) ~= O(n) if n is very large
 ======================================================================
 
 *********
