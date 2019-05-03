@@ -103,10 +103,10 @@ For last 2 statements before print                          -- 2n (4 list conver
                                                                   which will eventually be copying n elements
                                                                   to the new lists. So n instructions to execute.
                                                                   )
-                                                                sorting from Python uses
+                                                                sort from Python uses
                                                                 Timsort-->https://en.wikipedia.org/wiki/Timsort
                                                                 So,
-First print statement                                      -- nlogn + 2 instruction (sorting n elements, 1 print and 1 format method)
+First print statement                                      -- nlogn + 1 instruction (sorting n elements, 1 print)
 Second print statement                                     -- 6 instructions (1 print
                                                                               1 format
                                                                               2 len
@@ -114,7 +114,7 @@ Second print statement                                     -- 6 instructions (1 
                                                                               1 multiplication
                                                                               )
 
-Worse case performance = O(1+1+n+n+2+2n+8+2n++nlogn+2+6) = O(6n+nlogn+20) ~= O(n+nlogn) if n is very large
+Worse case performance = O(1+1+n+n+2+2n+8+2n++nlogn+1+6) = O(6n+nlogn+19) ~= O(n+nlogn) if n is very large
 ======================================================================
 
 
@@ -127,13 +127,11 @@ Opening the "texts.csv" file in read mode                  -- 1 instruction
 reading the csv file                                       -- 1 instruction
 Adding each line from "texts.csv" to the list              -- m instructions (Assuming there are m lines to the file)
 Loop goes for m time, with worst case all the if conditions
-will be true and will be executed                          -- m instructions (for creating rwo variables)
-                                                           -- 6m instructions
+will be true and will be executed                          --
+                                                           -- 4m instructions
                                                                 The following instructions execute of each item in loop
-                                                                (. 2 if conditions
-                                                                 . 2 function calls
-                                                                 . each if condition has 1 instruction to add element to set.
-                                                                    So total 2 instructions.
+                                                                (. 2 instructions for fetching values from indices
+                                                                 . 2 instructions for adding values to set
                                                                 )
 
 
@@ -141,22 +139,21 @@ Opening the "calls.csv" file in read mode                  -- 1 instruction
 reading the csv file                                       -- 1 instruction
 Adding each line from "calls.csv" to the list              -- n instructions (Assuming there are n lines to the file)
 Loop goes for n time, with worst case all the if conditions
-will be true and will be executed                          -- n instructions (for creating rwo variables)
-                                                           -- 6n instructions
+will be true and will be executed                          -- 4m instructions
                                                                 The following instructions execute of each item in loop
-                                                                (. 2 if conditions
-                                                                 . 2 function calls
-                                                                 . each if condition has 1 instruction to add element to set.
-                                                                    So total 2 instructions.
+                                                                (. 2 instructions for fetching values from indices
+                                                                 . 2 instructions for adding values to set
                                                                 )
 
-Loop runs n times and within loop there are 2 instructions
- which will run n times assuming all if conditions are true
- so total instructions with loop                           -- 2n instructions
+telemarketers -= not_telemarketers                          -- 2n instructions (As it has to go in loop and remove the
+                                                                                telemarketers entry. So an if condition
+                                                                                and delete statement. Total 2 statements
+                                                                                n times.)
 
-Print will take total                                      -- 2 instructions + nlogn instructions (sorting n elements
+Print will take total                                      -- 1 instructions + nlogn instructions (sorting n elements
                                                                                 assuming all the number are telemarketers)
+                                                                            + n instructions for printing n values
 
-Worst case performance = O(1+1+m+m+6m+1+1+n+n+6n+2n+2+nlogn) = O(6+8m+8n+nlogn) ~=O(m+n+nlogn) for large values
+Worst case performance = O(1+1+m+4m+1+1+n+n+4n+2n+1+nlogn+n) = O(6+5m+7n+nlogn) ~=O(m+n+nlogn) for large values
                                                                                         of m and n
 ======================================================================
